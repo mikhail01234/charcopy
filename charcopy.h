@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// example call: charcopy(&str1, &str2);  where str1 and str2 are both of char * type
+
 void charCopy(char ** destination, char ** str)
 {
 	free(*destination); // in case the function has already been called before
