@@ -6,7 +6,10 @@
 
 void charCopy(char ** destination, char ** str)
 {
-	free(*destination); // in case the function has already been called before
+	if (!(*destination))
+	{
+		free(*destination); // in case the function has already been called before
+	}
 	*destination = (char *)calloc(1, (strlen(*str) + 1) * sizeof(char));
 	memcpy(*destination, *str, strlen(*str) * sizeof(char));
 	return;
@@ -14,7 +17,10 @@ void charCopy(char ** destination, char ** str)
 
 void charCopyL(char ** destination, char ** str, int length)
 {
-	free(*destination); // in case the function has already been called before
+	if (!(*destination))
+	{
+		free(*destination); // in case the function has already been called before
+	}
 	*destination = (char *)calloc(1, (strlen(*str) + 1) * sizeof(char));
     int min_length = strlen(*str) < length ? strlen(*str) : length;
 	memcpy(*destination, *str, min_length * sizeof(char));
@@ -23,18 +29,30 @@ void charCopyL(char ** destination, char ** str, int length)
 
 void charConcat(char ** destination, char ** str)
 {
-	free(*destination); // in case the function has already been called before
-	*destination = (char *)calloc(1, (strlen(*str) + 1) * sizeof(char));
-	memcpy(*destination, *str, (strlen(*destination) + strlen(*str)) * sizeof(char));
+	char* tmp;
+	charCopy(&tmp, destination);
+	if (!(*destination))
+	{
+		free(*destination); // in case the function has already been called before
+	}
+	*destination = (char *)calloc(1, (strlen(*destination) + strlen(*str)) * sizeof(char));
+	memcpy(*destination, tmp, strlen(tmp) * sizeof(char));
+	memcpy(*destination + strlen(tmp) * sizeof(char), *str, (strlen(*str)) * sizeof(char));
 	return;
 }
 
 void charConcatL(char ** destination, char ** str, int length)
 {
-	free(*destination); // in case the function has already been called before
-	*destination = (char *)calloc(1, (strlen(*str) + 1) * sizeof(char));
-    int min_length = strlen(*destination) + strlen(*str) < strlen(*destination) + length ? strlen(*destination) + strlen(*str) : strlen(*destination) + length;
-	memcpy(*destination, *str, min_length * sizeof(char));
+	char* tmp;
+	charCopy(&tmp, destination);
+	if (!(*destination))
+	{
+		free(*destination); // in case the function has already been called before
+	}
+    int min_length = strlen(*str) < length ? strlen(*str) : length;
+	*destination = (char *)calloc(1, (min_length + 1) * sizeof(char));
+	memcpy(*destination, tmp, strlen(tmp) * sizeof(char));
+	memcpy(*destination + strlen(tmp) * sizeof(char), *str, min_length * sizeof(char));
 	return;
 }
 
@@ -42,7 +60,10 @@ void charConcat1(char ** destination, char ch)
 {
 	char* tmp;
 	charCopy(&tmp, destination);
-	free(*destination); // in case the function has already been called before
+	if (!(*destination))
+	{
+		free(*destination); // in case the function has already been called before
+	}
 	*destination = (char *)calloc((strlen(tmp) + 2), sizeof(char));
 	memcpy(*destination, tmp, strlen(tmp) * sizeof(char));
 	memcpy(*destination + strlen(tmp), &ch, 1 * sizeof(char));
